@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Update CI to use v2 orb
+- Update GitHub actions to use v4
 
 ### Fixed
 
