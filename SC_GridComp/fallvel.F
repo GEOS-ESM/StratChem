@@ -1,6 +1,6 @@
       FUNCTION fallvel(rad,density,ndens,tem)
 
-        USE MAPL_ConstantsMod,  only: MAPL_GRAV
+        USE MAPL_Constants,  only: MAPL_GRAV
 
 !    Function fallvel ---------- David B. Considine, 11/11/96
 
@@ -14,16 +14,16 @@
 !    fallvel - speed of falling particle in cm/s
 
 !    variables
-!    
+!
 !    rad - input radius of falling particle (microns)
 !    density - input density of particle (grams/cm**3)
 !    ndens - atmospheric number density (molecules/cm**3)
 !    dynvis - dynamic viscosity
 !    tem - temperature (Kelvin)
 !    mfp - mean free path
-!    
+!
 !    parameters
-!    
+!
 !    sigsq - square of effective collision diameter
 !    bet -
 !    s - sutherland's constant
@@ -54,7 +54,7 @@
 !    code assumes radius is in microns and rho is in grams/cm^3.
 !    converts radius to meters and rho to kg/m^3:
          radius = rad*1.e-6
-         rho = density*1.e3 
+         rho = density*1.e3
 
 !    Calculate mean free path. According to the U.S. Standard Atmosphere,
 !    1976, the mean free path is given by the relationship: mfp =
