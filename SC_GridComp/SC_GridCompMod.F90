@@ -35,7 +35,7 @@
 ! !PUBLIC TYPES:
 !
    PRIVATE
-   PUBLIC  SC_GridComp       ! The SC object 
+   PUBLIC  SC_GridComp       ! The SC object
 
 !
 ! !PUBLIC MEMBER FUNCTIONS:
@@ -50,7 +50,7 @@
 !
 ! !DESCRIPTION:
 !
-!  This module implements the Stratospheric Chemistry Grid Component. 
+!  This module implements the Stratospheric Chemistry Grid Component.
 !
 ! !REVISION HISTORY:
 !
@@ -65,22 +65,22 @@
 !
 !  Qing Liang's halon, HCFC, and VSLS updates were first implemented in tag Heracles-5_3_JEN_SC-v2, which
 !  increased by 19 the number of transported species with respect to Heracles-5_3_JEN_SC and previous tags.
-!  At the time, the GMAO was contemplating the use of SC instead of PCHEM in the DAS. But because the 
+!  At the time, the GMAO was contemplating the use of SC instead of PCHEM in the DAS. But because the
 !  short-term impacts of the update on ozone were predicted to be small, the increase in wallclock, not less
 !  than 15 to 20%, was considered an unacceptable burden on the DAS production cycle.
 !
 !  To resolve the issue for the DAS, while still retaining Qing's updates for chemistry-climate and other
 !  applications, an optional directive -DREDUCED can be added to the USER_FDEFS in the StratChem GNUmakefile.
 !  Upon compilation, -DREDUCED disables certain sections of the code added by Qing that are now wrapped
-!  in #ifndef REDUCED / #endif blocks, which "reduces" the chemistry to that of tags that preceded 
+!  in #ifndef REDUCED / #endif blocks, which "reduces" the chemistry to that of tags that preceded
 !  Heracles-5_3_JEN_SC-v2 with two exceptions: (1) Aggregated HCFC is obsolete and (2) H12_24 is replaced
 !  with H1211.
 !
 !  Disabling transport is accomplished by running the stratchem_setup script in src/Applications/GEOSgcm_App.
-!  It reconfigures the Chem_Registry.rc in the experiment RC directory by assigning the 19 species to the 
-!  non-transported (XX) variable list when it detects the presence of -DREDUCED in the GNUmakefile. The 
+!  It reconfigures the Chem_Registry.rc in the experiment RC directory by assigning the 19 species to the
+!  non-transported (XX) variable list when it detects the presence of -DREDUCED in the GNUmakefile. The
 !  above is necessary since the chemistry GC relies on the registries to order the species in the bsc bundle.
-!  
+!
 !  It is important to note that the import and export states, ExtData, and SC_GridComp.rc are not altered
 !  by -DREDUCED. However, the content of most export states related to the 19 species, tendencies and reaction
 !  rates for example, as well as that in their internal states, though still available, will not be valid.
@@ -131,8 +131,8 @@
 ! --------------------------------------------------
     REAL :: kNOspec
 
-! Number of years to add or subtract (must be greater than -1000) from the 
-! current year for the surface mixing ratios of greenhouse gases and ozone depleting  
+! Number of years to add or subtract (must be greater than -1000) from the
+! current year for the surface mixing ratios of greenhouse gases and ozone depleting
 ! depleting substances. To lock-in a specified year, enter the negative of the year number.
 ! -----------------------------------------------------------------------------------------
     INTEGER :: GHGYrAdj
@@ -202,7 +202,7 @@
 ! Polar stratospheric cloud parameters
 ! ------------------------------------
 !    PSCtmax - Maximum temperature for calculation of sads
-!    PSCpmax - Maximum pressure for calculation of sads. If pmax is 
+!    PSCpmax - Maximum pressure for calculation of sads. If pmax is
 !              negative, then pmax will be the tropopause pressure.
 !    PSCpmin - Minimum pressure for calculation of sads
     REAL :: PSCtmax = 240.
@@ -268,7 +268,7 @@
     REAL :: siglbs = 1.6
     REAL :: rlbs = 0.1
 
-! Species placement in bsc%qa(ic)%data3d 
+! Species placement in bsc%qa(ic)%data3d
 ! --------------------------------------
     INTEGER ::    iAoA,      iCO2,    iSF6
     INTEGER :: 	   iOx,      iNOx,    iHNO3,     iN2O5
@@ -276,9 +276,9 @@
     INTEGER ::   iHOCl,     iH2O2,     iBrx,      iN2O
     INTEGER :: 	  iCl2,     iOClO,    iBrCl,      iHBr
     INTEGER :: iBrONO2,      iCH4,    iHOBr,   iCH3OOH
-    INTEGER :: 	   iCO,    iHNO3c,      iO3,      iO3p   
+    INTEGER :: 	   iCO,    iHNO3c,      iO3,      iO3p
     INTEGER ::    iF11,      iF12,    iF113,     iF114
-    INTEGER ::   iF115 
+    INTEGER ::   iF115
     INTEGER ::   iCCl4,  iCH3CCl3,   iCH3Cl,    iCH3Br
     INTEGER ::  iH1301,    iH1211,   iH1202,    iH2402
     INTEGER :: iHCFC22, iHCFC141b, iHCFC142b,   iCHBr3
@@ -300,7 +300,7 @@
 
    INTEGER :: numGHGs = 3
    INTEGER :: numSSGs = 25
-   INTEGER :: numMBCs = 3 
+   INTEGER :: numMBCs = 3
 !  CHARACTER(LEN=ESMF_MAXSTR) :: SSGName(23) = (/    "CO2     ", &
 !    "CH4     ", "N2O     ", "CFC11   ", "CFC12   ", "CFC113  ", &
 !    "CCL4    ", "CH3CCL3 ", "HCFC22  ", "HCFC141B", "HCFC142B", &
@@ -353,7 +353,7 @@
    REAL :: emfMCF
    REAL :: emfHCFC22
    REAL :: emfCCL4
-   
+
   END TYPE SC_GridComp
 
 CONTAINS
@@ -390,7 +390,7 @@ CONTAINS
    TYPE(ESMF_State), INTENT(INOUT)  :: expChem  ! Export State
    INTEGER, INTENT(OUT) ::  rc                  ! Error return code:
                                                 !  0 - all is well
-                                                !  1 - 
+                                                !  1 -
 
 ! !DESCRIPTION: Initializes the SC Grid Component. It primarily sets
 !               the import state for each active constituent package.
@@ -430,11 +430,11 @@ CONTAINS
    i1 = gcSC%i1
    i2 = gcSC%i2
    im = gcSC%im
-   
+
    j1 = gcSC%j1
    j2 = gcSC%j2
    jm = gcSC%jm
-   
+
    km = gcSC%km
    gcSC%levels_cal = km
    gcSC%BCnymd = -1
@@ -535,7 +535,7 @@ CONTAINS
    ELSE
     gcSC%doSediment = .TRUE.
    END IF
-   
+
    CALL I90_label ( 'verbose:', status )
    VERIFY_(status)
    i = I90_gint( status )
@@ -545,7 +545,7 @@ CONTAINS
    ELSE
     gcSC%verbose = .TRUE.
    END IF
-   
+
    CALL I90_label ( 'useSolCyc:', status )
    VERIFY_(status)
    i = I90_gint( status )
@@ -879,7 +879,7 @@ CONTAINS
 
 #else
 
-  IF(MAPL_AM_I_ROOT(vm)) THEN 
+  IF(MAPL_AM_I_ROOT(vm)) THEN
    status = NF_OPEN(TRIM(fileName), NF_NOWRITE, unit)
 
 #endif
@@ -1060,7 +1060,7 @@ CONTAINS
 ! !DESCRIPTION:
 !
 ! Read and broadcast the latitudes (radians)
-! on which the climatological fields are stored. 
+! on which the climatological fields are stored.
 !
 ! Input parameters:
 !
@@ -1103,7 +1103,7 @@ CONTAINS
 
 #else
 
-  IF(MAPL_AM_I_ROOT(vm)) THEN 
+  IF(MAPL_AM_I_ROOT(vm)) THEN
    status = NF_OPEN(TRIM(fileName), NF_NOWRITE, unit)
 
 #endif
@@ -1231,8 +1231,8 @@ CONTAINS
    INTEGER, INTENT(out) ::  rc                  ! Error return code:
                                                 !  0 - all is well
                                                 !  1 -
- 
-! !DESCRIPTION: This routine implements the so-called SC Driver. That 
+
+! !DESCRIPTION: This routine implements the so-called SC Driver. That
 !               is, adds chemical tendencies to each of the constituents
 !
 ! !REVISION HISTORY:
@@ -1254,8 +1254,8 @@ CONTAINS
    REAL, POINTER, DIMENSION(:,:,:) ::  rhoa, rhoadry, hghte
    REAL, POINTER, DIMENSION(:,:)   ::  cellArea
    REAL, POINTER, DIMENSION(:,:)   ::  oro   ! Surface ocean-land-ice mask
-   REAL, POINTER, DIMENSION(:,:)   ::  precc, precl, pblh 
-   REAL, POINTER, DIMENSION(:,:,:) ::  pfllsan, pfilsan 
+   REAL, POINTER, DIMENSION(:,:)   ::  precc, precl, pblh
+   REAL, POINTER, DIMENSION(:,:,:) ::  pfllsan, pfilsan
    REAL, POINTER, DIMENSION(:,:)   ::  frlake, frocean, frseaice
 
 !  Additional needs for GOCART convective diagnostic
@@ -1267,7 +1267,7 @@ CONTAINS
    real*8, allocatable                   ::  area_(:,:), frlake_(:,:), &
                                              frocean_(:,:), frseaice_(:,:)
    integer*4                             ::  icdt
-   
+
 ! Input fields from ExtData
    REAL, POINTER, DIMENSION(:,:)   ::  f11ems, f12ems, f113ems
    REAL, POINTER, DIMENSION(:,:)   ::  mcfems, ccl4ems, hcfc22ems
@@ -1282,7 +1282,7 @@ CONTAINS
    REAL, POINTER, DIMENSION(:,:)   :: f12flx,   f11flx,  f113flx
    REAL, POINTER, DIMENSION(:,:)   :: ccl4flx,  mcfflx, ch3clflx, ch3brflx
    REAL, POINTER, DIMENSION(:,:)   :: h1301flx, h1211flx, h1202flx, h2402flx
-   REAL, POINTER, DIMENSION(:,:)   :: hcfc22flx,  hcfc141bflx,  hcfc142bflx 
+   REAL, POINTER, DIMENSION(:,:)   :: hcfc22flx,  hcfc141bflx,  hcfc142bflx
    REAL, POINTER, DIMENSION(:,:)   :: szarad,  scbasek
 !  REAL, POINTER, DIMENSION(:,:,:) :: SO4SAimp  ! imported sulfate surface area density m2 m-3
    REAL, POINTER, DIMENSION(:,:,:) :: SO4SAv,SO4SAt  ! imported sulfate surface area density m2 m-3
@@ -1300,13 +1300,12 @@ CONTAINS
    REAL, POINTER, DIMENSION(:,:,:) :: qqk021, qqk022, qqk023, qqk024, qqk025
    REAL, POINTER, DIMENSION(:,:,:) :: qqk026, qqk027, qqk028, qqk029, qqk030
    REAL, POINTER, DIMENSION(:,:,:) :: qqk031, qqk032, qqk033, qqk034, qqk035
-    
-   
+
+
    type(Chem_Array), pointer :: fluxout
 
 ! Local
 ! -----
-   INTEGER, PARAMETER :: DBL = KIND(0.00D+00)
    INTEGER, PARAMETER :: FROM_BUNDLE = 1, TO_BUNDLE = -1
    REAL, PARAMETER :: MIN_VALUE = 1.00E-25
 
@@ -1433,7 +1432,7 @@ CONTAINS
 
   iXj   = (i2-i1+1)*(j2-j1+1)
   ijkl  = iXj * km
-  ijk1l = iXj * (km+1) 
+  ijk1l = iXj * (km+1)
 
 ! Grab the virtual machine
 ! ------------------------
@@ -1855,7 +1854,7 @@ CONTAINS
         specHum(i,j,km:1:-1)*rhoa(i,j,km:1:-1)/MAPL_H2OMW ) * MAPL_AVOGAD * 1.00E-06
     numDensDry(1:km) = rhoadry(i,j,km:1:-1)*MAPL_AVOGAD*1.00E-06/MAPL_AIRMW
 
-    rdair(i,j,km:1:-1) = numDensDry(1:km)/numDens(1:km) 
+    rdair(i,j,km:1:-1) = numDensDry(1:km)/numDens(1:km)
 
 ! Cell depth [cm] and volume [m^3]
 ! --------------------------------
@@ -2015,7 +2014,7 @@ CONTAINS
                  oclo,brcl,hbr,brono2,ch4,hobr,ch3ooh,co,h2o,hno3c,h2oc,f11,f12,f113, &
                 f114,f115,ccl4,hcfc22,hcfc141b,hcfc142b,chbr3,ch2br2,ch2brcl,chbrcl2, &
                           chbr2cl,hfc23,hfc32,hfc125,hfc134a,hfc143a,hfc152a,co2,sf6, &
-               ch3ccl3,ch3cl,ch3br,h1301,h1211,h1202,h2402,o3,o3p,o1d,n,no,no2,no3,h, & 
+               ch3ccl3,ch3cl,ch3br,h1301,h1211,h1202,h2402,o3,o3p,o1d,n,no,no2,no3,h, &
               oh,ho2,cl,clo,bro,br,cl2o2,ch2o,ch3o2,box_ro3ox,speciesBase,scReg%nq)
 
 ! Variables needed for chemistry time step length analysis.  These are changed
@@ -2031,7 +2030,7 @@ CONTAINS
 ! For the current cell ...
 ! ------------------------
      ThisCell: DO WHILE(passNumber <= requiredPasses)
-      
+
 ! Run the mechanism
 ! -----------------
       Chemistry: DO
@@ -2043,7 +2042,7 @@ CONTAINS
                   oclo,brcl,hbr,brono2,ch4,hobr,ch3ooh,co,h2o,hno3c,h2oc,f11,f12,f113, &
                  f114,f115,ccl4,hcfc22,hcfc141b,hcfc142b,chbr3,ch2br2,ch2brcl,chbrcl2, &
                           chbr2cl,hfc23,hfc32,hfc125,hfc134a,hfc143a,hfc152a,co2,sf6,  &
-                ch3ccl3,ch3cl,ch3br,h1301,h1211,h1202,h2402,o3,o3p,o1d,n,no,no2,no3,h, &           
+                ch3ccl3,ch3cl,ch3br,h1301,h1211,h1202,h2402,o3,o3p,o1d,n,no,no2,no3,h, &
                oh,ho2,cl,clo,bro,br,cl2o2,ch2o,ch3o2,box_ro3ox,speciesBase,scReg%nq)
         passNumber = 1
        END IF
@@ -2065,7 +2064,7 @@ CONTAINS
 #ifndef REDUCED
       sf6 = sf6 - sf6*climSF6LOSSProfile(k)*tdt
 !   Should increase the loss when addressing "lifetime" concerns
-!     sf6 = sf6 - sf6*10*climSF6LOSSProfile(k)*tdt 
+!     sf6 = sf6 - sf6*10*climSF6LOSSProfile(k)*tdt
 #endif
 
 ! Parameterized scavenging of species in the troposphere
@@ -2168,7 +2167,7 @@ CONTAINS
 
 !  OCS photolysis rates (for ACHEM)
 !  --------------------------------
-   IF(ASSOCIATED(jocs)) jocs(i,j,kRev) = aj(55) 
+   IF(ASSOCIATED(jocs)) jocs(i,j,kRev) = aj(55)
 
 ! End of chemistry at layer k of the current (i,j).
 ! -------------------------------------------------
@@ -2187,7 +2186,7 @@ CONTAINS
 ! -----------------------------------
    END DO Longitude
   END DO Latitude
- 
+
 !  Large-scale Wet Removal
 !  --------------------------
 
@@ -2220,7 +2219,7 @@ CONTAINS
 !  HOBr
    species_index = gcSC%iHOBr
    qa_single(1)%data3d(:,:,:) = bsc%qa(species_index)%data3d(:,:,:)
- 
+
    KIN = .TRUE.
    call WetRemovalGOCART(i1, i2, j1, j2, km, 1, 1, tdt, 'bromine', KIN,  &
               qa_single, ple, t, rhoa, pfllsan, pfilsan, &
@@ -2267,7 +2266,7 @@ CONTAINS
    area_     = cellArea
    frlake_   = frlake
    frocean_  = frocean
-   frseaice_ = frseaice   
+   frseaice_ = frseaice
 
    do k = 1, km+1
     cmfmc_(:,:,k)   = cmfmc(:,:,km-k+1)
@@ -2286,7 +2285,7 @@ CONTAINS
    do k = 1, km
      tc_(:,:,k,1)   = bsc%qa(gcSC%iHBr)%data3d(:,:,km-k+1)
      tc_(:,:,k,2)   = bsc%qa(gcSC%iHOBr)%data3d(:,:,km-k+1)
-     tc_(:,:,k,3)   = bsc%qa(gcSC%iBrONO2)%data3d(:,:,km-k+1)  
+     tc_(:,:,k,3)   = bsc%qa(gcSC%iBrONO2)%data3d(:,:,km-k+1)
    enddo
 
    call set_vud(i1, i2, j1, j2, km, frlake_, frocean_, frseaice_, cmfmc_, qccu_, &
@@ -2328,7 +2327,7 @@ CONTAINS
 !  Ozone mass mixing ratio
 !  -----------------------
    IF(ASSOCIATED(ozone)) &
-    ozone(i1:i2,j1:j2,1:km) = bsc%qa(gcSC%iO3)%data3d(i1:i2,j1:j2,1:km) * MAPL_O3MW/MAPL_AIRMW 
+    ozone(i1:i2,j1:j2,1:km) = bsc%qa(gcSC%iO3)%data3d(i1:i2,j1:j2,1:km) * MAPL_O3MW/MAPL_AIRMW
 
 !  Ozone mole fraction in ppm
 !  --------------------------
@@ -2402,7 +2401,7 @@ CONTAINS
   INTEGER :: i, j, k, kLast
   INTEGER :: m1, m2, mo, n, numSSGmonths, numSO4months
   INTEGER :: YrAdj
-  
+
   REAL :: fac, q, r, s
 
   REAL, ALLOCATABLE :: x(:,:,:)
@@ -2412,7 +2411,7 @@ CONTAINS
   CHARACTER(LEN=ESMF_MAXSTR) :: fileName, varName
 
   CHARACTER(LEN=ESMF_MAXSTR) :: SSGName(25) = (/    "CO2     ", &
-    "CH4     ", "N2O     ", "CFC11   ", "CFC12   ", "CFC113  ", & 
+    "CH4     ", "N2O     ", "CFC11   ", "CFC12   ", "CFC113  ", &
     "CFC114  ", "CFC115  ", "CCL4    ", "CH3CCL3 ", "HCFC22  ", &
     "HCFC141B", "HCFC142B", "H1211   ", "H1301   ", "H1202   ", &
     "H2402   ", "CH3BR   ", "CH3CL   ", "HFC23   ", "HFC32   ", &
@@ -2435,7 +2434,7 @@ CONTAINS
   CALL ESMF_TimeGet(timeNow, YY=ccyy, MM=mo, RC=STATUS)
   VERIFY_(STATUS)
   CALL MAPL_ClimInterpFac(SCClock, m1, m2, fac, RC=status)
-  VERIFY_(status) 
+  VERIFY_(status)
 
   IF(m1 > m2 .AND. mo ==  1) m1 =  0
   IF(m1 > m2 .AND. mo == 12) m2 = 13
@@ -2457,7 +2456,7 @@ CONTAINS
 
 #else
 
-  IF(MAPL_AM_I_ROOT()) THEN 
+  IF(MAPL_AM_I_ROOT()) THEN
    status = NF_OPEN(TRIM(fileName), NF_NOWRITE, unit)
 
 #endif
@@ -2529,7 +2528,7 @@ CONTAINS
     j = m2+(ccyyAdjusted-beginYear)*12
     IF(j <            1) j = 1
     IF(j > numSSGmonths) j = numSSGmonths
-   
+
     IF(MAPL_AM_I_ROOT() .AND. k == gcSC%numGHGs ) THEN
      PRINT *,TRIM(Iam)//":"
      PRINT *," GHGs updated to ",ccyyAdjusted,".  Indicies: ",i,j
@@ -2553,7 +2552,7 @@ CONTAINS
      PRINT *, NF_STRERROR(status)
      VERIFY_(status)
     END IF
-    
+
     status = NF_GET_VARA_REAL(unit, n, j, 1, s)
     IF(status /= NF_NOERR) THEN
      PRINT *,"Error getting second month for ",TRIM(varName), status
@@ -2594,7 +2593,7 @@ CONTAINS
    ELSE
     ccyyAdjusted = ccyy+YrAdj
    END IF
-   
+
    i = m1+(ccyyAdjusted-beginYear)*12
    IF(i <            1) i = 1
    IF(i > numSSGmonths) i = numSSGmonths
@@ -2602,7 +2601,7 @@ CONTAINS
    IF(j <            1) j = 1
    IF(j > numSSGmonths) j = numSSGmonths
 
-   DO k=1,2 
+   DO k=1,2
 
     varName = TRIM(MBCName(k))
     status = NF_INQ_VARID(unit, TRIM(varName), n)
@@ -2611,7 +2610,7 @@ CONTAINS
      PRINT *, NF_STRERROR(status)
      VERIFY_(status)
     END IF
-   
+
     startco2(2)=i
     status = NF_GET_VARA_REAL(unit, n, startco2, cntco2, sm1)
     IF(status /= NF_NOERR) THEN
@@ -2619,7 +2618,7 @@ CONTAINS
      PRINT *, NF_STRERROR(status)
      VERIFY_(status)
     END IF
-   
+
     startco2(2)=j
     status = NF_GET_VARA_REAL(unit, n, startco2, cntco2, sm2)
     IF(status /= NF_NOERR) THEN
@@ -2678,7 +2677,7 @@ CONTAINS
    END IF
 
    beginYear = i/10000
-   
+
    IF(gcSC%SO4saYr == 0) THEN
     ccyyAdjusted = ccyy
    ELSE
@@ -2815,16 +2814,16 @@ CONTAINS
 !  Liang     11 Sep 2015: First crack.
 !
 !-----------------------------------------------------------------------
-  
+
   TYPE(ESMF_Time) :: timeNow
   CHARACTER(LEN=ESMF_MAXSTR) :: Iam = "SC::readEMSFactor"
 
   INTEGER :: ccyy, ccyyAdjusted
   INTEGER :: comm, dimid, info, i, k, n, status, unit
   REAL    :: r
- 
+
   CHARACTER(LEN=ESMF_MAXSTR) :: fileName, varName
-  
+
   CHARACTER(LEN=ESMF_MAXSTR) :: EMSName(6) = (/"CFC11_emission_factor  ", &
                                                "CFC12_emission_factor  ", &
                                                "CFC113_emission_factor ", &
@@ -2896,9 +2895,9 @@ CONTAINS
 #endif
 
    i = ccyy-1950
- 
+
    DO k = 1,6
-    
+
     varName = TRIM(EMSName(k))
 
     status = NF_INQ_VARID(unit, TRIM(varName), n)
@@ -2965,7 +2964,7 @@ CONTAINS
 
  RETURN
  END SUBROUTINE readEMSFactor
- 
+
  SUBROUTINE mapToGrid(field2D, field3D, name, rc)
   IMPLICIT NONE
   REAL, INTENT(IN) :: field2D(gcSC%numClimLats,gcSC%km)
@@ -2986,7 +2985,7 @@ CONTAINS
 
   RETURN
  END SUBROUTINE mapToGrid
-  
+
  SUBROUTINE mapToSurf(field1D, field2D, name, rc)
   IMPLICIT NONE
   REAL, INTENT(IN) :: field1D(gcSC%numClimLats)
@@ -3013,13 +3012,13 @@ CONTAINS
                                                           mcfcol,ctccol,lwi,rc)
 
 ! ----------------------------------------------------------------------
-! Update the surface source gases mixing ratios, and find the surface 
-! mass flux per unit time [ kg s^-1 ] that is required to account for 
+! Update the surface source gases mixing ratios, and find the surface
+! mass flux per unit time [ kg s^-1 ] that is required to account for
 ! the change in mixing ratio.
 !
 ! The species in the argument list are in units of number density.
 !
-! m is number density in cm^{-3}, dV is the volume of the cell in 
+! m is number density in cm^{-3}, dV is the volume of the cell in
 ! m^{3}, and tdt is the time step length (s).
 ! ----------------------------------------------------------------------
 
@@ -3032,7 +3031,6 @@ CONTAINS
   REAL(KIND=DBL), INTENT(IN) :: mcfcol, ctccol  ! MCF and CTC total column density
   INTEGER, INTENT(OUT) :: rc
 
-  INTEGER, PARAMETER :: DBL=KIND(0.00D+00)
   REAL(KIND=DBL), INTENT(INOUT) :: n2o,ch4,f11,f12,f113,f114,f115,ccl4,ch3ccl3
   REAL(KIND=DBL), INTENT(INOUT) :: ch3cl,ch3br,h1301,h1211,h1202,h2402
   REAL(KIND=DBL), INTENT(INOUT) :: hcfc22,hcfc141b,hcfc142b,co2,sf6
@@ -3059,7 +3057,7 @@ CONTAINS
   REAL, PARAMETER ::    mwtCH3Br =  94.944
   REAL, PARAMETER ::    mwtH1301 = 148.92
   REAL, PARAMETER ::    mwtH1211 = 164.36
-  REAL, PARAMETER ::    mwtH1202 = 209.81 
+  REAL, PARAMETER ::    mwtH1202 = 209.81
   REAL, PARAMETER ::    mwtH2402 = 259.81
   REAL, PARAMETER ::    mwtCHBr3 = 252.73
   REAL, PARAMETER ::   mwtCH2Br2 = 173.84
@@ -3193,9 +3191,9 @@ CONTAINS
 
 #ifndef REDUCED
   co2   = gcSC%CO2MBC2D(i,j)  * mdry * 1.00E-06
-  sf6   = gcSC%SF6MBC2D(i,j)  * mdry * 1.00E-12    
+  sf6   = gcSC%SF6MBC2D(i,j)  * mdry * 1.00E-12
 #endif
- 
+
 ! Find the flux per unit time
 ! ---------------------------
       n2oflx(i,j) = (      n2o-bsc%qa(     gcSC%iN2O)%data3d(i,j,km)*m)*cx*mwtN2O
@@ -3223,7 +3221,7 @@ CONTAINS
     h1202flx(i,j) = (    h1202-bsc%qa(   gcSC%iH1202)%data3d(i,j,km)*m)*cx*mwtH1202
     h2402flx(i,j) = (    h2402-bsc%qa(   gcSC%iH2402)%data3d(i,j,km)*m)*cx*mwtH2402
 #endif
-  
+
   RETURN
  END SUBROUTINE SSGSfcFlx
 
@@ -3239,9 +3237,9 @@ CONTAINS
   rc = 0
 
   SELECT CASE (direction)
-  
+
    CASE(1)
- 
+
            ox = bsc%qa(      gcSC%iOx)%data3d(i,j,kRev)*m
           nox = bsc%qa(     gcSC%iNOx)%data3d(i,j,kRev)*m
          hno3 = bsc%qa(    gcSC%iHNO3)%data3d(i,j,kRev)*m
@@ -3467,8 +3465,8 @@ CONTAINS
 
   CALL calc_qqjk(k,k1Strat,km,dt,daytime,aj,ak,qqj,qqk,oh,o1d,cl,ch4,n2o,f11,f12, &
             f113,f114,f115,ch3ccl3,ccl4,ch3cl,ch3br,chbr3,ch2br2,ch2brcl,chbrcl2, &
-     chbr2cl,h1301,h1211,h1202,h2402,hcfc22,hcfc141b,hcfc142b,hfc23,hfc32,hfc125, & 
-               hfc134a,hfc143a,hfc152a,gcSC%levels_cal,gcSC%numreacs,gcSC%numphoto) 
+     chbr2cl,h1301,h1211,h1202,h2402,hcfc22,hcfc141b,hcfc142b,hfc23,hfc32,hfc125, &
+               hfc134a,hfc143a,hfc152a,gcSC%levels_cal,gcSC%numreacs,gcSC%numphoto)
 
   IF(gcSC%spinup .AND. passNumber == 1) CALL sproic(k,km,midPress,numDens,daytime, &
             aj,ak,br,bro,brono2,brx,cl,cl2o2,clo,clx,h,h2o,hno3,ho2,n,n2o5,no,no2, &
@@ -3477,7 +3475,7 @@ CONTAINS
   CALL part(k,k1Strat,km,daytime,numDens,aj,ak,bro,brx,ch2o,ch3o2,ch4,clo,clono2, &
              h,hbr,hno3,ho2,hobr,n,n2o5,no,no2,no3,nox,o3,o3p,oh,rbrnbrx,rbrobrx, &
                    rcl2o2clo,rclclo,rcloclx,rnno,rno2nox,rno3no2,rnono2,rocloclo, &
-                             gcSC%levels_cal,gcSC%numreacs,gcSC%numphoto,gcSC%o2) 
+                             gcSC%levels_cal,gcSC%numreacs,gcSC%numphoto,gcSC%o2)
 
   CALL chxpart(k,k1Strat,km,daytime,numDens,aj,ak,brx,ch2o,ch3,ch3br,ch3o,ch3o2, &
            ch3ooh,ch4,cho,clx,ho2,nox,o1d,o3p,oh,rbrnbrx,rbrobrx,rclclo,rcloclx, &
@@ -3585,7 +3583,7 @@ CONTAINS
 !-------------------------------------------------------------------------
 !BOP
 !
-! !IROUTINE:  SC_GridCompFinalize --- The Chem Driver 
+! !IROUTINE:  SC_GridCompFinalize --- The Chem Driver
 !
 ! !INTERFACE:
 !
@@ -3615,7 +3613,7 @@ CONTAINS
    INTEGER, INTENT(out) ::  rc                  ! Error return code:
                                                 !  0 - all is well
                                                 !  1 -
- 
+
 ! !DESCRIPTION: This routine finalizes this Grid Component.
 !
 ! !REVISION HISTORY:
@@ -3628,7 +3626,7 @@ CONTAINS
 
    CHARACTER(LEN=*), PARAMETER :: Iam = 'SC_GridCompFinalize'
    INTEGER :: status
-   
+
    rc = 0
 
    DEALLOCATE(gcSC%climLatRad, STAT=status)
