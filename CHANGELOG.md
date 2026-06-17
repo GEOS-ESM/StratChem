@@ -11,14 +11,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Update CI to use v2 orb
-- Update GitHub actions to use v4
-
 ### Fixed
 
 ### Removed
 
 ### Deprecated
+
+## [1.1.0] - 2026-04-22
+
+### Changed
+
+- Updates for CI
+
+### Fixed
+
+- Fixes for Flang 22
+  - Remove unneeded declaration of `DBL`
 
 ## [1.0.0] - 2023-01-18
 
