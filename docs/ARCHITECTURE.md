@@ -7,7 +7,7 @@
 Other fixtures (for example GEOSadas, GEOSldas) may place this repository
 elsewhere; paths inside this repository do not change.
 
-Parent: [`../docs/ARCHITECTURE.md`](../../docs/ARCHITECTURE.md) (the Chemistry component; its sections 2.3 and 3 cover how children are added, connected and run). This document does not repeat them. See also [`../AGENTS.md`](../../AGENTS.md) and this repository's [`AGENTS.md`](../AGENTS.md), [`decisions.md`](decisions.md).
+Parent: `../docs/ARCHITECTURE.md` (`../../docs/ARCHITECTURE.md` in the fixture) (the Chemistry component; its sections 2.3 and 3 cover how children are added, connected and run). This document does not repeat them. See also `../AGENTS.md` (`../../AGENTS.md` in the fixture) and this repository's [`AGENTS.md`](../AGENTS.md), [`decisions.md`](decisions.md).
 
 ## Directory and file map
 | Path | Role |
