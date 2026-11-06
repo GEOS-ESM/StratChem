@@ -1,13 +1,15 @@
 # StratChem architecture
 
 **Audience:** coding agents and developers working on StratChem.
-**Describes:** the MAPL2 line, branch `develop`.
-**Verified against:** `StratChem` @ `cbf1c41` (2026-11-06).
-**Placement:** as in the GEOSgcm fixture (`components.yaml` @ `0f2e0fb`), key `StratChem`, local path `src/Components/@GEOSgcm_GridComp/GEOSagcm_GridComp/GEOSphysics_GridComp/@GEOSchem_GridComp/@StratChem`, `develop: develop`.
+**Describes:** the MAPL3 line, branch `release/MAPL-v3`.
+**Verified against:** `StratChem` @ `db11b02` (2026-11-06).
+**Placement:** as in the GEOSgcm fixture (`components.yaml` @ `f50622d`), key `StratChem`, local path `src/Components/@GEOSgcm_GridComp/GEOSagcm_GridComp/GEOSphysics_GridComp/@GEOSchem_GridComp/@StratChem`, branch `release/MAPL-v3`, `develop: develop`.
 Other fixtures (for example GEOSadas, GEOSldas) may place this repository
 elsewhere; paths inside this repository do not change.
 
-Parent: `../docs/ARCHITECTURE.md` (`../../docs/ARCHITECTURE.md` in the fixture) (the Chemistry component; its sections 2.3 and 3 cover how children are added, connected and run). This document does not repeat them. See also `../AGENTS.md` (`../../AGENTS.md` in the fixture) and this repository's [`AGENTS.md`](../AGENTS.md), [`decisions.md`](decisions.md).
+**Build status on this line:** not built, not ported. On `release/MAPL-v3`, `@GEOSchem_GridComp/CMakeLists.txt` calls `esma_add_subdirectories(GOCART)` only, with the comment "Restore subdirs as components are ported to MAPL3."; `StratChem` appears only in a commented-out list of subdirectories. The code in this repository is the MAPL2 code, kept for a later port; it differs from the MAPL2 `develop` branch only in `SC_GridComp/fallvel.F` (`USE MAPL_Constants` instead of `USE MAPL_ConstantsMod`). The Chemistry top-level library (`GEOS_ChemGridComp.F90`, which adds this component) is present but not compiled on this line: the `esma_add_library` block that builds it is commented out in `../CMakeLists.txt`. Statements about it describe the file as it is. Its build dependency `Chem_Shared` (from the Chemistry `Shared` directory) is also in the commented-out list; the other listed dependencies are `MAPL`, `MAPL_cfio_r4`, `GMAO_mpeu`, `NetCDF::NetCDF_Fortran`.
+
+Parent: `../../docs/ARCHITECTURE.md` in the fixture (the Chemistry component, which adds, connects and runs its children). This document does not repeat that. See also `../AGENTS.md` (`../../AGENTS.md` in the fixture) and this repository's [`AGENTS.md`](../AGENTS.md), [`decisions.md`](decisions.md).
 
 ## Directory and file map
 | Path | Role |
@@ -35,7 +37,7 @@ chemistry children (`StratChem_GridCompMod.F90`, `SetServices`; `SC_GridComp/SC_
 It is an optional child of the Chemistry component.
 
 ## 2. Place in the hierarchy
-- Parent: `GEOSchem` (`GEOS_ChemGridComp.F90`). Added with `MAPL_AddChild(GC, NAME='STRATCHEM', SS=StratChem_SetServices)` when `ENABLE_STRATCHEM:` is true (default false) (`GEOS_ChemGridComp.F90`, SetServices). The parent has one phase for this child (see parent section 3).
+- Parent: `GEOSchem` (`GEOS_ChemGridComp.F90`). Added with `MAPL_AddChild(GC, NAME='STRATCHEM', SS=StratChem_SetServices)` when `ENABLE_STRATCHEM:` is true (default false) (`GEOS_ChemGridComp.F90`, SetServices). The parent has one phase for this child (see the parent's architecture document).
 - Children: none. `SC_GridComp` is a plain Fortran type and module called from the wrapper, not a MAPL/ESMF component (`StratChem_GridCompMod.F90`, `Initialize_`, `Run_`).
 - Parent wiring involving `STRATCHEM` (`GEOS_ChemGridComp.F90`, SetServices):
   - `CHEMENV` to `STRATCHEM`: `AIRDENS`, `AIRDENS_DRYP`, `DELP`, `CN_PRCP`, `NCN_PRCP`, `LFR`.
@@ -43,10 +45,10 @@ It is an optional child of the Chemistry component.
   - `STRATCHEM` to `ACHEM`: `O3P`, `OH` (as `OHSTRAT`), `O3CHEM` (as `O3`), `OCS_JRATE`.
   - `CARMA` to `STRATCHEM`: `CARMA_SUSAREA`, `CARMA_SUSAREAv` as `SO4SAREA`, `SO4SAREAvolc`, when the aerosol provider is `CARMA`.
   - `GOCART` to `STRATCHEM`: `SO4SAREA` (and `SO4SAREAvolc` for the volcanic sulfate species), plus `GOCART::DMS/SO2/SO4/MSA` and the `v` variants (see Observations).
-  - Ozone-provider selection by `ANALYSIS_OX_PROVIDER:` (parent section 3).
+  - Ozone-provider selection by `ANALYSIS_OX_PROVIDER:` (see the parent's architecture document).
   Other imports not listed (`T`, `Q`, `PLE`, `TROPP`, `LWI`, ...) are not connected in the lines read; *Inferred:* they come from the parent's own import state through the generic parent-to-child import mapping.
 - Friendly tracers (`StratChem_GridCompMod.F90`, `SetServices`):
-  - transported species are `FRIENDLYTO` `DYNAMICS:TURBULENCE:MOIST` plus the component name, so they enter `CHEM_TRACERS` as `STRATCHEM::<name>` (parent section 3);
+  - transported species are `FRIENDLYTO` `DYNAMICS:TURBULENCE:MOIST` plus the component name, so they enter `CHEM_TRACERS` as `STRATCHEM::<name>` (see the parent's architecture document);
   - `OX` also gets `ANALYSIS` when `ANALYSIS_OX_PROVIDER:` is `STRATCHEM`;
   - `HBR`, `HOBR`, `BRONO2` get only `DYNAMICS:TURBULENCE` (not `MOIST`).
 
@@ -103,7 +105,7 @@ All in `StratChem_GridCompMod.F90`; one phase each, registered with `MAPL_GridCo
 - Internal state (`SetServices`): one 3-D field per `SC_table::` species (transported, friendly) and per `XX_table::` species
   (`FRIENDLYTO` = component name, `ADD2EXPORT`, so exported under the same name).
   - Non-transported species include `O3CHEM`, `O3P`, `O1D`, `OH`, `HO2`, radicals, `CH2O`, `RO3OX` (`SC_Mech_Registry.rc`).
-  - Restart: generic MAPL internal restart; the parent template keeps the `STRATCHEM` restart keys commented out (parent section 3).
+  - Restart: generic MAPL internal restart; the parent template keeps the `STRATCHEM` restart keys commented out (see the parent's architecture document).
 - Private Fortran state: `StratChem_state` (wrapped, stored with `ESMF_UserCompSetInternalState`) holds the combined registry, the `SC_GridComp` legacy state and the bundle `bsc` (`StratChem_GridCompMod.F90`, `SetServices`, `extract_`).
 - Species order: the legacy bundle index equals the order of `SC_table::` then `XX_table::` (`Runtime_RegistryCombine`).
 
@@ -123,7 +125,7 @@ All in `StratChem_GridCompMod.F90`; one phase each, registered with `MAPL_GridCo
     or added to it when `addSAclim` is set (`SC_GridCompRun`).
 
 ## 6. Dependencies
-- Libraries (`CMakeLists.txt`): `Chem_Shared`, `MAPL`, `MAPL_cfio_r4`, `GMAO_mpeu`, `NetCDF::NetCDF_Fortran`.
+- Not built on this line. Libraries (`CMakeLists.txt`): `Chem_Shared`, `MAPL`, `MAPL_cfio_r4`, `GMAO_mpeu`, `NetCDF::NetCDF_Fortran`.
 - Modules used: `Runtime_RegistryMod`, `Species_BundleMod`, `Chem_Mod`, `Chem_StateMod`, `Chem_ConstMod`, `Chem_UtilMod`, `m_inpak90`, `WetRemovalMod`, `ConvectionMod` (`SC_GridCompMod.F90`), from the Chemistry shared code, not from this repository.
 - Data files read on the root and broadcast (`readPhotTables`, `initClimVars`, `readClimVars`, `readEMSFactor`): `KRateTables`, `photolysisFile`, `climatologiesFile` (all under `ExtData/g5chem/...`), via NetCDF with optional parallel I/O (`H5_HAVE_PARALLEL`).
 - Build-time code generation: `SC_Registry.rc` to `StratChem_{ExportSpec,ImportSpec,GetPointer}___.h` and `StratChem_History___.rc` (`CMakeLists.txt`).
@@ -147,4 +149,4 @@ See [`decisions.md`](decisions.md).
 - `SC_GridCompRun` has commented-out `SO4SAimp` code and `gcrProfile` is zero in both branches of `useSolCyc` (comment says it awaits implementation).
 - `SC_Registry.rc` import long names for `F12FLUX` and `F113FLUX` are `flux_of_cfc11`.
 - `Run_`: `PRINT *` then `STATUS = 1` for invalid tropopause pressure; `ChangeLog` is not updated past 2019 (a separate `CHANGELOG.md` exists).
-- Parent document: its section 3 lists `STRATCHEM` in the friendly-tracer targets; the code confirms this. No contradiction found.
+- Parent document (MAPL2 line): it lists `STRATCHEM` in the friendly-tracer targets; the code confirms this. No contradiction found.

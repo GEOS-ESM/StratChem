@@ -1,9 +1,9 @@
 # StratChem decisions
 
 **Audience:** coding agents and developers working on StratChem.
-**Describes:** the MAPL2 line, branch `develop`.
-**Verified against:** `StratChem` @ `cbf1c41` (2026-11-06).
-**Placement:** as in the GEOSgcm fixture (`components.yaml` @ `0f2e0fb`), key `StratChem`.
+**Describes:** the MAPL3 line, branch `release/MAPL-v3`.
+**Verified against:** `StratChem` @ `db11b02` (2026-11-06).
+**Placement:** as in the GEOSgcm fixture (`components.yaml` @ `f50622d`), key `StratChem`.
 
 See [`ARCHITECTURE.md`](ARCHITECTURE.md). Reasons are inferred from the code only; no history was mined.
 
